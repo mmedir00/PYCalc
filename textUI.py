@@ -1,4 +1,5 @@
 from numberProcessor import *
+from specialsDetector import *
 
 import os
 
@@ -15,13 +16,16 @@ class textUI:
                 break
             else:
                 try:
-                    string = self.ansReplace(string)
-                    self.ans = numberProcessor.process(string)
+                    if "{" in string:
+                        specials = specialsDetector(string)
+                        numbers = specials.process()
+                    numbers = self.ansReplace(numbers)
+                    self.ans = numberProcessor.process(numbers)
                     print(f"<<< {self.ans}\n")
-                except NameError:
-                    print("<<< Sintaxis Error.\n")
-                except ZeroDivisionError:
-                    print("<<< Math Error (zero division).\n")
+                except NameError as e:
+                    print(f"<<< Sintaxis Error. {e.args}\n")
+                except ZeroDivisionError as e:
+                    print(f"<<< Math Error (zero division).{e.args}\n")
 
     def clear(self):    
         if os.name == "nt":
@@ -30,8 +34,8 @@ class textUI:
             os.system("clear")
 
     def ansReplace (self, string):
-        string = string.replace("Ans", str(self.ans))
-        string = string.replace("ans", str(self.ans))
+        string = str(string).replace("Ans", str(self.ans))
+        string = str(string).replace("ans", str(self.ans))
         return string
     
             
