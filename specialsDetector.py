@@ -3,11 +3,11 @@ import math
 class specialsDetector:
     def __init__(self, string):
         self.string = string
-        self.dict = {"e": math.e,
-                    "pi": math.pi,
+        self.dict = {"e": round(math.e ,5),
+                    "pi": round(math.pi, 5)
                     }
 
-        self.operators = ["cos", "sin", "tan", "acs", "asn", "atg"]
+        self.operators = ["cos", "sin", "tan", "acs", "asn", "atg", "log"]
 
     def process(self):
         last = 0
@@ -50,5 +50,8 @@ class specialsDetector:
         elif string[0:3] == "atg":
             result = str(math.atan(float(eval(string[3:]))))
             result = math.degrees(float(result))
-        
+
+        elif string[0:3] == "log":
+            result = str(math.log(float(eval(string[3:]))))
+
         return str(round(float(result), 5))
